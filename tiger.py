@@ -55,7 +55,7 @@ async def on_message(message):
             for y in message.author.roles:
                 if x == y.id:
                     # await message.channel.send('You have permission')
-                    await message.channel.send("Next up is <@" + str(queue.pop()) + ">")
+                    await message.channel.send("Next up is <@" + str(queue.pop(0)) + ">")
                     return
         await message.channel.send('<@' + str(message.author.id) + '> You do not have permission to this command')
         return
