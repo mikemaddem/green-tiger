@@ -1,40 +1,57 @@
 import discord
-from discord.ext import commands
 
-description = '''Something useful'''
+client = discord.Client()
 
-intents = discord.Intents.default()
-intents.members = True
+queue = []
 
-bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+admins = [78907597943472128]
 
-@bot.event
+priv_roles = [881592747985891419, 881592716121763842]
+
+prefix = '?'
+
+@client.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
+    print('We have logged in as {0.user}'.format(client))
 
-@bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
-
-@bot.command()
-async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await ctx.send('Format has to be in NdN!')
+@client.event
+async def on_message(message):
+    if message.author == client.user:
         return
 
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await ctx.send(result)
+    if message.content.startswith(prefix+"joinq"):
+        if message.author.id in queue:
+            await message.channel.send('You are already in the queue, use '+prefix+"status to check your position")
+        else:
+            await message.channel.send('Adding you to the queue')
+            queue.append(message.author.id)
 
-@bot.command()
-async def joined(ctx, member: discord.Member):
-    """Says when a member joined."""
-    await ctx.send('{0.name} joined in {0.joined_at}'.format(member))
+    if message.content.startswith(prefix+"leaveq"):
+        if message.author.id in queue:
+            await message.channel.send('removing you from the queue')
+            queue.remove(message.author.id)
+        else:
+            await message.channel.send('You are not currently in the queue')
 
-bot.run('token')
+    if message.content.startswith(prefix+"status"):
+        embed = discord.Embed(title="Current Queue")
+        y = 0
+        for x in queue:
+            embed.add_field(name="Position #"+str(y), value="Member: <@"+str(queue[y])+">")
+            y = y + 1
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith(prefix+"next"):
+        for x in priv_roles:
+            for y in message.author.roles:
+                if x == y.id:
+                    # await message.channel.send('You have permission')
+                    await message.channel.send("Next up is <@" + str(queue.pop())+">")
+                    return
+        await message.channel.send('You do not have permission')
+        return
+
+    if message.content.startswith('$hello'):
+        await message.channel.send('Hello!')
+
+client.run('token')
