@@ -18,7 +18,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-        
+
     if message.content.startswith(prefix+"joinq"):
         await message.delete()
         if message.author.id in queue:
@@ -45,6 +45,8 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     if message.content.startswith(prefix+"next"):
+        if len(queue) == 0:
+            await message.channel.send("The queue is currently empty!")
         for x in priv_roles:
             for y in message.author.roles:
                 if x == y.id:
