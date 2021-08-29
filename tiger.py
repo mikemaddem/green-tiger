@@ -19,19 +19,23 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    if message.content.startswith(prefix+"next"):
+        pass
+    else:
+        await message.delete()
     if message.content.startswith(prefix+"joinq"):
         if message.author.id in queue:
-            await message.channel.send('You are already in the queue, use '+prefix+"status to check your position")
+            await message.channel.send('<@'+str(message.author.id)+'> You are already in the queue, use '+prefix+"status to check your position")
         else:
-            await message.channel.send('Adding you to the queue')
+            await message.channel.send('<@'+str(message.author.id)+'> Adding you to the queue')
             queue.append(message.author.id)
 
     if message.content.startswith(prefix+"leaveq"):
         if message.author.id in queue:
-            await message.channel.send('removing you from the queue')
+            await message.channel.send('<@'+str(message.author.id)+'> Removing you from the queue')
             queue.remove(message.author.id)
         else:
-            await message.channel.send('You are not currently in the queue')
+            await message.channel.send('<@'+str(message.author.id)+'> You are not currently in the queue')
 
     if message.content.startswith(prefix+"status"):
         embed = discord.Embed(title="Current Queue")
@@ -48,7 +52,7 @@ async def on_message(message):
                     # await message.channel.send('You have permission')
                     await message.channel.send("Next up is <@" + str(queue.pop())+">")
                     return
-        await message.channel.send('You do not have permission')
+        await message.channel.send('<@'+str(message.author.id)+'> You do not have permission to this command')
         return
 
     if message.content.startswith('$hello'):
