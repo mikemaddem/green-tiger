@@ -65,12 +65,12 @@ async def on_message(message):
                               description="Get up and running with this simple Discord Queue bot!",
                               url="https://www.github.com/mikemaddem/green-tiger")
         embed.add_field(name=prefix + "joinq Command",
-                        value="Use " + prefix + "joinq to join the queue and get assistance")
+                        value="Use " + prefix + "joinq to join the queue and get assistance", inline=True)
         embed.add_field(name=prefix + "leaveq Command",
-                        value="Use " + prefix + "leaveq to leave the queue. You will lose your spot on line, you are able to rejoin however you'll rejoin at the end of the queue")
+                        value="Use " + prefix + "leaveq to leave the queue. You will lose your spot on line, you are able to rejoin however you'll rejoin at the end of the queue", inline=True)
         embed.add_field(name=prefix + "next",
                         value="For use by TA's/Faculty to grab the next person in queue. Current roles = <@" + str(
-                            priv_roles[0]) + "> and <@" + str(priv_roles[1]) + ">")
+                            priv_roles[0]) + "> and <@" + str(priv_roles[1]) + ">", inline=True)
 
         await message.channel.send(embed=embed)
 
