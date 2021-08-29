@@ -18,12 +18,9 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
-    if message.content.startswith(prefix+"next"):
-        pass
-    else:
-        await message.delete()
+        
     if message.content.startswith(prefix+"joinq"):
+        await message.delete()
         if message.author.id in queue:
             await message.channel.send('<@'+str(message.author.id)+'> You are already in the queue, use '+prefix+"status to check your position")
         else:
@@ -31,6 +28,7 @@ async def on_message(message):
             queue.append(message.author.id)
 
     if message.content.startswith(prefix+"leaveq"):
+        await message.delete()
         if message.author.id in queue:
             await message.channel.send('<@'+str(message.author.id)+'> Removing you from the queue')
             queue.remove(message.author.id)
@@ -38,6 +36,7 @@ async def on_message(message):
             await message.channel.send('<@'+str(message.author.id)+'> You are not currently in the queue')
 
     if message.content.startswith(prefix+"status"):
+        await message.delete()
         embed = discord.Embed(title="Current Queue")
         y = 0
         for x in queue:
