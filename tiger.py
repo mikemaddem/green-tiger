@@ -11,7 +11,7 @@ priv_roles = [877256642280947742, 877256845205581905]
 
 prefix = '?'
 
-open = False
+global open = False
 
 
 @client.event
