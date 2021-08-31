@@ -11,8 +11,7 @@ priv_roles = [877256642280947742, 877256845205581905]
 
 prefix = '?'
 
-global open
-open = False
+is_open=False
 
 
 @client.event
@@ -27,12 +26,12 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "joinq"):
         await message.delete()
-        """if open:
+        if is_open:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
             return
-        """
+        
         if message.author.id in queue:
             await message.channel.send('<@' + str(
                 message.author.id) + '> You are already in the queue, use ' + prefix + "status to check your position")
@@ -42,12 +41,12 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "leaveq"):
         await message.delete()
-        """if open:
+        if is_open:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
             return
-        """
+        
         if message.author.id in queue:
             await message.channel.send('<@' + str(message.author.id) + '> Removing you from the queue')
             queue.remove(message.author.id)
@@ -56,12 +55,12 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "status"):
         await message.delete()
-        """if open:
+        if is_open:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
             return
-        """
+        
         embed = discord.Embed(title="Current Queue")
         y = 0
         for x in queue:
@@ -70,12 +69,12 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     if message.content.startswith(prefix + "next"):
-        """if open:
+        if is_open:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
             return
-        """
+        
         if len(queue) == 0:
             await message.channel.send("The queue is currently empty!")
             return
@@ -103,26 +102,26 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     if message.content.startswith(prefix+'openq'):
-        if open:
+        if is_open:
             await message.channel.send("The queue is already open")
             return
         for x in priv_roles:
             for y in message.author.roles:
                 if x == y.id:
                     # await message.channel.send('You have permission')
-                    open=True
+                    is_open=True
                     await message.channel.send("The queue is now open")
                     return
 
     if message.content.startswith(prefix+'closeq'):
-        if not open:
+        if not is_open:
             await message.channel.send("The queue is already closed")
             return
         for x in priv_roles:
             for y in message.author.roles:
                 if x == y.id:
                     # await message.channel.send('You have permission')
-                    open=False
+                    is_open=False
                     await message.channel.send("The queue is now closed")
                     return
 
