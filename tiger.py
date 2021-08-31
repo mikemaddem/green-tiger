@@ -10,7 +10,7 @@ admins = [78907597943472128]
 priv_roles = [877256642280947742, 877256845205581905]
 
 prefix = '?'
-
+global is_open
 is_open=False
 
 
