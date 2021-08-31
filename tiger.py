@@ -16,8 +16,6 @@ prefix = '?'
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    global is_open
-    is_open=False
 
 
 @client.event
@@ -126,6 +124,6 @@ async def on_message(message):
                     await message.channel.send("The queue is now closed")
                     return
 
-
-
+global is_open
+is_open=False
 client.run(config.token)
