@@ -11,6 +11,7 @@ priv_roles = [877256642280947742, 877256845205581905]
 
 prefix = '?'
 
+is_open = [True]
 
 
 @client.event
@@ -25,7 +26,7 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "joinq"):
         await message.delete()
-        if is_open:
+        if is_open[0]:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
@@ -40,7 +41,7 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "leaveq"):
         await message.delete()
-        if is_open:
+        if is_open[0]:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
@@ -54,7 +55,7 @@ async def on_message(message):
 
     if message.content.startswith(prefix + "status"):
         await message.delete()
-        if is_open:
+        if is_open[0]:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
@@ -68,7 +69,7 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     if message.content.startswith(prefix + "next"):
-        if is_open:
+        if is_open[0]:
             pass
         else:
             await message.channel.send('<@'+str(message.author.id)+'> The queue is currently not open, please wait for office hours to begin')
@@ -101,29 +102,28 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     if message.content.startswith(prefix+'openq'):
-        if is_open:
+        if is_open[0]:
             await message.channel.send("The queue is already open")
             return
         for x in priv_roles:
             for y in message.author.roles:
                 if x == y.id:
                     # await message.channel.send('You have permission')
-                    is_open=True
+                    is_open[0]=True
                     await message.channel.send("The queue is now open")
                     return
 
     if message.content.startswith(prefix+'closeq'):
-        if not is_open:
+        if not is_open[0]:
             await message.channel.send("The queue is already closed")
             return
         for x in priv_roles:
             for y in message.author.roles:
                 if x == y.id:
                     # await message.channel.send('You have permission')
-                    is_open=False
+                    is_open[0]=False
                     await message.channel.send("The queue is now closed")
                     return
 
-global is_open
-is_open=False
+
 client.run(config.token)
